@@ -25,7 +25,7 @@ io.on("connection", (socket) => {
 
   //User sends message
   socket.on("send_message", (data) => {
-    console.log(data);
+    socket.to(data.chatroom).emit("receive_message", data);
   });
 
   socket.on("disconnect", () => {
