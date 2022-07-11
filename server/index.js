@@ -23,6 +23,11 @@ io.on("connection", (socket) => {
     console.log("User joined:", socket.id);
   });
 
+  //User sends message
+  socket.on("send_message", (data) => {
+    console.log(data);
+  });
+
   socket.on("disconnect", () => {
     console.log("User Disconnected");
   });
