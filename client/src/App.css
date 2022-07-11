@@ -20,3 +20,29 @@
 .message-container::-webkit-scrollbar {
   display: none;
 }
+
+.message-content {
+  height: auto;
+  padding: 0 1rem;
+  margin-bottom: 0.2rem;
+  display: flex;
+  border-radius: 2rem;
+}
+
+#you {
+  justify-content: flex-start;
+}
+
+#you .message-content {
+  justify-content: flex-start;
+  background-color: #d0d0ce;
+}
+
+#other {
+  justify-content: flex-end;
+}
+
+#other .message-content {
+  justify-content: flex-end;
+  background-color: #a6dd47;
+}

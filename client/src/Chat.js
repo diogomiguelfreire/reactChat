@@ -10,13 +10,14 @@ function Chat({ socket, chatroom, username }) {
     if (currentMessage !== "") {
       const messageData = {
         chatroom: chatroom,
-        author: "username",
+        author: username,
         message: currentMessage,
       };
 
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
+      console.log(messageData.author);
     }
   };
 
@@ -35,8 +36,13 @@ function Chat({ socket, chatroom, username }) {
         <ScrollToBottom className="message-container">
           {messageList.map((messageContent) => {
             return (
-              <div className="message-content">
-                <p>{messageContent.message}</p>
+              <div
+                className="message-content"
+                id={username === messageContent.author ? "other" : "you"}
+              >
+                <div className="message-content">
+                  <p>{messageContent.message}</p>
+                </div>
               </div>
             );
           })}
