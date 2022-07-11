@@ -35,7 +35,7 @@
 
 #you .message-content {
   justify-content: flex-start;
-  background-color: #d0d0ce;
+  background-color: #dddddd;
 }
 
 #other {
@@ -45,4 +45,18 @@
 #other .message-content {
   justify-content: flex-end;
   background-color: #a6dd47;
+}
+
+.message-bold {
+  color: darkgrey;
+}
+
+.message-normal {
+  color: black;
+}
+
+.chat-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
 }

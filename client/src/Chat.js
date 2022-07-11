@@ -12,14 +12,29 @@ function Chat({ socket, chatroom }) {
     if (currentMessage !== "") {
       let type = "message";
       let newName = username;
+      let message = currentMessage;
       if (currentMessage.search("/nick") == 0) {
         type = "nameChange";
         newName = currentMessage.replace("/nick", "");
+      } else if (currentMessage.search("/think") == 0) {
+        message = currentMessage.replace("/think", "");
+      }
+
+      if (currentMessage.search("/opps") == 0) {
+        type = "delete";
+        for (let index = messageList.length - 1; index >= 0; index--) {
+          if (messageList[index].id === socket.id) {
+            let x = messageList.splice(index, 1);
+            setMessageList(messageList.splice(index, 1));
+            console.log(x);
+          }
+        }
       }
       const messageData = {
         chatroom: chatroom,
         author: newName,
-        message: currentMessage,
+        message: message,
+        think: currentMessage.search("/think") == 0,
         id: socket.id,
         type: type,
       };
@@ -29,6 +44,15 @@ function Chat({ socket, chatroom }) {
       setCurrentMessage("");
       setUsername(newName);
     }
+  };
+  const userIsTyping = () => {
+    console.log("pass");
+    socket.emit("send_message", { type: "isTyping" });
+    setTimeout(userStopedTyping, 5000);
+  };
+
+  const userStopedTyping = () => {
+    socket.emit("send_message", { type: "isNotTyping" });
   };
 
   useEffect(() => {
@@ -44,7 +68,7 @@ function Chat({ socket, chatroom }) {
   return (
     <div className="chatroom-window">
       <div>
-        <p>{otherUsername}</p>
+        <p className="chat-title">{otherUsername}</p>
       </div>
       <div className="chatroom-body">
         <ScrollToBottom className="message-container">
@@ -56,7 +80,13 @@ function Chat({ socket, chatroom }) {
                   id={socket.id === messageContent.id ? "other" : "you"}
                 >
                   <div className="message-content">
-                    <p>{messageContent.message}</p>
+                    <p
+                      className={
+                        messageContent.think ? "message-bold" : "message-normal"
+                      }
+                    >
+                      {messageContent.message}
+                    </p>
                   </div>
                 </div>
               );
@@ -68,6 +98,7 @@ function Chat({ socket, chatroom }) {
         type="text"
         placeholder="..."
         value={currentMessage}
+        onKeyDown={userIsTyping}
         onChange={(event) => {
           setCurrentMessage(event.target.value);
         }}
