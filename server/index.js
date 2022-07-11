@@ -17,6 +17,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("User connected");
 
+  //User connects to a specific chatroom with id
+  socket.on("join_chat", (id) => {
+    socket.join(id);
+    console.log("User joined:", socket.id);
+  });
+
   socket.on("disconnect", () => {
     console.log("User Disconnected");
   });
